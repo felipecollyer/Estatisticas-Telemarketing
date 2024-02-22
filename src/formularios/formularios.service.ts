@@ -27,10 +27,10 @@ export class FormulariosService {
       }
     });
 
-    const formulario24 = Estatisticas_por_agendamento(formulario_24);
-    const formulario48 = Estatisticas_por_agendamento(formulario_48);
+    const agendamento_24 = Estatisticas_por_agendamento(formulario_24);
+    const agendamento_48 = Estatisticas_por_agendamento(formulario_48);
 
-    return { formulario24, formulario48 };
+    return { agendamento_24, agendamento_48 };
   }
 
   findOne(id: number) {
