@@ -1,4 +1,4 @@
-export function tipoAgendamento(formularios) {
+export function Tipo_agendamento(formularios) {
   const totalTiposAgendamento = {};
 
   formularios.forEach((formulario) => {

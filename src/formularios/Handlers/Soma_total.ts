@@ -3,7 +3,6 @@ export function somaTotal(formularios) {
   let totalAgendamento24 = 0;
   let totalAgendamento48 = 0;
 
-  
   formularios.forEach((formulario) => {
     if (formulario.agendamento === '24') {
       totalAgendamento24++;

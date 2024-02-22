@@ -1,4 +1,4 @@
-export function cicloAgendado(formularios) {
+export function Ciclo_agendamento(formularios) {
   const totalCiclosAgendamento = {};
 
   formularios.forEach((formulario) => {

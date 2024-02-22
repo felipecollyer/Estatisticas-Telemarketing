@@ -5,9 +5,8 @@ export function FormularioComPedido(formularios) {
     (formulario) => formulario.nome_formulario === 'Pedido',
   );
 
-  const Agendamento = HandlersIndex.tipoAgendamento(formulariosPedido);
-  const Ciclo = HandlersIndex.cicloAgendado(formulariosPedido);
-
+  const Agendamento = HandlersIndex.Tipo_agendamento(formulariosPedido);
+  const Ciclo = HandlersIndex.Ciclo_agendamento(formulariosPedido);
 
   return {
     Total: formulariosPedido.length,

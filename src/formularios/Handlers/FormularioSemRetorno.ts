@@ -5,7 +5,7 @@ export function FormularioSemRetorno(formularios) {
     (formulario) => formulario.nome_formulario === 'Sem Retorno',
   );
 
-  const Ciclo = HandlersIndex.cicloAgendado(formulariosSemRetorno);
+  const Ciclo = HandlersIndex.Ciclo_agendamento(formulariosSemRetorno);
 
   return {
     Total: formulariosSemRetorno.length,

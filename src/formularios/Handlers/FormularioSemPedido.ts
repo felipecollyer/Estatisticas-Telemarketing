@@ -5,10 +5,8 @@ export function FormularioSemPedido(formularios) {
     (formulario) => formulario.nome_formulario === 'Sem Pedido',
   );
 
-  const Agendamento = HandlersIndex.tipoAgendamento(formulariosSemPedido);
-  const Ciclo = HandlersIndex.cicloAgendado(formulariosSemPedido);
-
-
+  const Agendamento = HandlersIndex.Tipo_agendamento(formulariosSemPedido);
+  const Ciclo = HandlersIndex.Ciclo_agendamento(formulariosSemPedido);
 
   return {
     Total: formulariosSemPedido.length,
