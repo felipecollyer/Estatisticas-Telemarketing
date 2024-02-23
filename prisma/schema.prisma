@@ -8,33 +8,30 @@ datasource db {
 }
 
 model Usuario {
-  id         Int       @id @default(autoincrement())
-  name       String    @db.VarChar(255)
-  email      String    @db.VarChar(255)
-  password   String    @db.VarChar(255)
-  created_at DateTime? @default(now()) @db.Timestamp(6)
-  updated_at DateTime? @default(now()) @db.Timestamp(6)
+  id          Int          @id @default(autoincrement())
+  name        String       @db.VarChar(255)
+  email       String       @db.VarChar(255)
+  password    String       @db.VarChar(255)
+  created_at  DateTime?    @default(now()) @db.Timestamp(6)
+  updated_at  DateTime?    @default(now()) @db.Timestamp(6)
+  formularios Formulario[]
 
   @@map("usuarios")
-  
-  // Adicionando o relacionamento com a tabela de formulários
-  formularios Formulario[]
 }
 
 model Formulario {
-  id         Int       @id @default(autoincrement())
-  nome_formulario       String    @db.VarChar(255)
-  agendamento  String    @db.VarChar(255)
+  id                Int       @id @default(autoincrement())
+  nome_formulario   String    @db.VarChar(255)
+  agendamento       String    @db.VarChar(255)
   tipo_agendamento  String    @db.VarChar(255)
-  ciclo_agendamento  String    @db.VarChar(255)
-  usuario_id Int       @db.Integer
-  created_at DateTime? @default(now()) @db.Timestamp(6)
-  updated_at DateTime? @default(now()) @db.Timestamp(6)
+  ciclo_agendamento String    @db.VarChar(255)
+  usuario_id        Int
+  razao_social      String    @db.VarChar(255)
+  codigo            Int       // Alterando para o tipo Int
+  created_at        DateTime? @default(now()) @db.Timestamp(6)
+  updated_at        DateTime? @default(now()) @db.Timestamp(6)
+  usuario           Usuario   @relation(fields: [usuario_id], references: [id])
 
   @@map("formularios")
-  
-  // Adicionando o relacionamento com a tabela de usuários
-  usuario Usuario @relation(fields: [usuario_id], references: [id])
 }
-
 

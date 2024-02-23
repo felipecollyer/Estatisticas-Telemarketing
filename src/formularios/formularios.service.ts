@@ -17,6 +17,7 @@ export class FormulariosService {
     const formularios = await this.prisma.formulario.findMany();
 
     const formulario_24 = [];
+    console.log(formularios);
     const formulario_48 = [];
 
     formularios.forEach((formulario) => {
