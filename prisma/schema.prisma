@@ -22,12 +22,12 @@ model Usuario {
 model Formulario {
   id                Int       @id @default(autoincrement())
   nome_formulario   String    @db.VarChar(255)
+  codigo_cliente            Int
+  razao_social      String    @db.VarChar(255)
   agendamento       String    @db.VarChar(255)
   tipo_agendamento  String    @db.VarChar(255)
   ciclo_agendamento String    @db.VarChar(255)
   usuario_id        Int
-  razao_social      String    @db.VarChar(255)
-  codigo            Int       // Alterando para o tipo Int
   created_at        DateTime? @default(now()) @db.Timestamp(6)
   updated_at        DateTime? @default(now()) @db.Timestamp(6)
   usuario           Usuario   @relation(fields: [usuario_id], references: [id])

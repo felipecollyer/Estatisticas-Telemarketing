@@ -3,10 +3,12 @@ import {
   Get,
   Post,
   Body,
-  Patch,
+  Headers,
   Param,
   Delete,
+  Patch,
   UseInterceptors,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { FormulariosService } from './formularios.service';
 import { CreateFormularioDto } from './dto/create-formulario.dto';
@@ -18,8 +20,12 @@ export class FormulariosController {
   constructor(private readonly formulariosService: FormulariosService) {}
 
   @Post()
-  create(@Body() createFormularioDto: CreateFormularioDto) {
-    return this.formulariosService.create(createFormularioDto);
+  create(
+    @Body() createFormularioDto: CreateFormularioDto,
+    @Headers() headers: Record<string, string>,
+  ) {
+    // Aqui você pode ver os cabeçalhos HTTP
+    return this.formulariosService.create(createFormularioDto, headers);
   }
 
   @UseInterceptors(LogInterceptor)

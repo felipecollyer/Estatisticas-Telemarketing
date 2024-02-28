@@ -1,23 +1,34 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Param } from '@nestjs/common';
 import { CreateFormularioDto } from './dto/create-formulario.dto';
 import { UpdateFormularioDto } from './dto/update-formulario.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { HandlersIndex } from './Handlers/index';
 import { Estatisticas_por_agendamento } from './Handlers/Estatisticas_por_agendamento';
 
 @Injectable()
 export class FormulariosService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createFormularioDto: CreateFormularioDto) {
-    return 'This action adds a new formulario';
+  async create(createFormularioDto: CreateFormularioDto, headers) {
+    const Formulario = await this.prisma.formulario.create({
+      data: {
+        nome_formulario: createFormularioDto.nome_formulario,
+        codigo_cliente: createFormularioDto.codigo_cliente,
+        razao_social: createFormularioDto.razao_social,
+        agendamento: createFormularioDto.agendamento,
+        tipo_agendamento: createFormularioDto.tipo_agendamento,
+        ciclo_agendamento: createFormularioDto.ciclo_agendamento,
+        usuario_id: 2,
+      },
+    });
+
+    return `Formulario Salvo com sucesso.`;
   }
 
   async findAll() {
-    const formularios = await this.prisma.formulario.findMany();
-
+    const formularios = await this.prisma.formulario.findMany({
+      where: { usuario_id: 2 },
+    });
     const formulario_24 = [];
-    console.log(formularios);
     const formulario_48 = [];
 
     formularios.forEach((formulario) => {
@@ -31,7 +42,13 @@ export class FormulariosService {
     const agendamento_24 = Estatisticas_por_agendamento(formulario_24);
     const agendamento_48 = Estatisticas_por_agendamento(formulario_48);
 
-    return { agendamento_24, agendamento_48 };
+    const Estatisticas = {
+      usuario_id: '1',
+      agendamento_24,
+      agendamento_48,
+    };
+
+    return { Estatisticas };
   }
 
   findOne(id: number) {
@@ -42,7 +59,17 @@ export class FormulariosService {
     return `This action updates a #${id} formulario`;
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    const usuario_id = 1;
+
+    try {
+      const x = await this.prisma.formulario.delete({
+        where: { id, usuario_id },
+      });
+    } catch (x) {
+      return { error: x };
+    }
+
     return `This action removes a #${id} formulario`;
   }
 }
