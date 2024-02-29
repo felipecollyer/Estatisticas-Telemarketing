@@ -1,4 +1,4 @@
-import { Injectable, Param } from '@nestjs/common';
+import { Injectable, Param, Query } from '@nestjs/common';
 import { CreateFormularioDto } from './dto/create-formulario.dto';
 import { UpdateFormularioDto } from './dto/update-formulario.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -24,10 +24,16 @@ export class FormulariosService {
     return `Formulario Salvo com sucesso.`;
   }
 
-  async findAll() {
+  async findAll(atendente: number, dia: string) {
+    const x = new Date(dia);
+    //x.setHours(0, 0, 0, 0);
+    //console.log(dia);
+    //const created_at_date = x.toISOString().split('T')[0];
     const formularios = await this.prisma.formulario.findMany({
-      where: { usuario_id: 2 },
+      where: { usuario_id: atendente, created_at: x },
     });
+    console.log(formularios);
+
     const formulario_24 = [];
     const formulario_48 = [];
 
@@ -51,8 +57,8 @@ export class FormulariosService {
     return { Estatisticas };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} formulario`;
+  findOne() {
+    return `This action returns a formulario`;
   }
 
   update(id: number, updateFormularioDto: UpdateFormularioDto) {

@@ -9,6 +9,7 @@ import {
   Patch,
   UseInterceptors,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { FormulariosService } from './formularios.service';
 import { CreateFormularioDto } from './dto/create-formulario.dto';
@@ -29,14 +30,17 @@ export class FormulariosController {
   }
 
   @UseInterceptors(LogInterceptor)
-  @Get()
-  findAll() {
-    return this.formulariosService.findAll();
+  @Get('visualizar')
+  findAll(
+    @Query('atendente', ParseIntPipe) atendente: number,
+    @Query('dia') dia: string,
+  ) {
+    return this.formulariosService.findAll(atendente, dia);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.formulariosService.findOne(+id);
+  @Get()
+  findOne() {
+    return this.formulariosService.findOne();
   }
 
   @Patch(':id')
