@@ -3,6 +3,7 @@ import { CreateFormularioDto } from './dto/create-formulario.dto';
 import { UpdateFormularioDto } from './dto/update-formulario.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Estatisticas_por_agendamento } from './Handlers/Estatisticas_por_agendamento';
+import { buscarFormularios } from './Handlers/BuscarFormularios';
 
 @Injectable()
 export class FormulariosService {
@@ -24,15 +25,19 @@ export class FormulariosService {
     return `Formulario Salvo com sucesso.`;
   }
 
-  async findAll(atendente: number, dia: string) {
-    const x = new Date(dia);
-    //x.setHours(0, 0, 0, 0);
-    //console.log(dia);
-    //const created_at_date = x.toISOString().split('T')[0];
+  async findAll(atendente: number, inicial: string, final: string) {
+    //const x = new Date(dia);
+    const search = buscarFormularios(inicial, final);
+
     const formularios = await this.prisma.formulario.findMany({
-      where: { usuario_id: atendente, created_at: x },
+      where: {
+        usuario_id: atendente,
+        created_at: {
+          gte: search.primeiroDiaDoMes,
+          lt: search.ultimoDiaDoMes,
+        },
+      },
     });
-    console.log(formularios);
 
     const formulario_24 = [];
     const formulario_48 = [];
@@ -49,7 +54,7 @@ export class FormulariosService {
     const agendamento_48 = Estatisticas_por_agendamento(formulario_48);
 
     const Estatisticas = {
-      usuario_id: '1',
+      usuario_id: atendente,
       agendamento_24,
       agendamento_48,
     };

@@ -33,9 +33,10 @@ export class FormulariosController {
   @Get('visualizar')
   findAll(
     @Query('atendente', ParseIntPipe) atendente: number,
-    @Query('dia') dia: string,
+    @Query('inicial') inicial: string,
+    @Query('final') final: string,
   ) {
-    return this.formulariosService.findAll(atendente, dia);
+    return this.formulariosService.findAll(atendente, inicial, final);
   }
 
   @Get()
