@@ -31,12 +31,8 @@ export class FormulariosController {
 
   @UseInterceptors(LogInterceptor)
   @Get('visualizar')
-  findAll(
-    @Query('atendente', ParseIntPipe) atendente: number,
-    @Query('inicial') inicial: string,
-    @Query('final') final: string,
-  ) {
-    return this.formulariosService.findAll(atendente, inicial, final);
+  findAll(@Body() body) {
+    return this.formulariosService.findAll(body);
   }
 
   @Get()
