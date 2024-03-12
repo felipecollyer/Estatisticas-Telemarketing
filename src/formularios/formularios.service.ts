@@ -37,12 +37,13 @@ export class FormulariosService {
   }
 
   async findAll(body) {
-    const Data_inicio = new Date(body.data_inicial);
-    const Data_final = new Date(body.data_final);
+    console.log(body);
+    const Data_inicio = new Date("2024-03-11");
+    const Data_final = new Date("2024-03-12");
 
     const formularios = await this.prisma.formulario.findMany({
       where: {
-        usuario_id: body.token_usuario,
+        usuario_id: 1,
         created_at: {
           gte: Data_inicio,
           lt: Data_final,
@@ -66,7 +67,6 @@ export class FormulariosService {
 
     const Estatisticas = {
       usuario_id: body.token_usuario,
-
       agendamento_24,
       agendamento_48,
     };
