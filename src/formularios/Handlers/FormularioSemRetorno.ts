@@ -2,12 +2,12 @@ import { HandlersIndex } from './index';
 
 export function FormularioSemRetorno(formularios) {
   const formulariosSemRetorno = formularios.filter(
-    (formulario) => formulario.nome_formulario === 'Sem Retorno',
+    (formulario) => formulario.nome_formulario === 'Sem retorno',
   );
 
   const ClienteSemRetorno = formulariosSemRetorno.map(function (formulario) {
     return {
-      codigo: formulario.codigo,
+      codigo: formulario.codigo_cliente,
       razao_social: formulario.razao_social,
       ciclo_agendamento: formulario.ciclo_agendamento,
     };

@@ -1,0 +1,85 @@
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>Document</title>
+    <link href='/public/css/index.css' rel='stylesheet' />
+  </head>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0;
+    background-color: #f4f4f4; } .container { max-width: 800px; margin: 20px
+    auto; background-color: #fff; border-radius: 10px; box-shadow: 0 0 10px
+    rgba(0, 0, 0, 0.1); padding: 20px; } h2, h3, h4 { color: #333; margin-top:
+    0; } h4 { margin-left: 350px; } .section { margin-bottom: 20px; }
+    .subsection { margin-bottom: 20px; } table { width: 100%; border-collapse:
+    collapse; } th, td { padding: 10px; text-align: left; border-bottom: 1px
+    solid #ddd; } th { background-color: #f2f2f2; } p { margin: 0; line-height:
+    1.5; } ul { list-style-type: none; padding: 0; margin: 0; } li {
+    margin-bottom: 5px; }
+  </style>
+  <body>
+    <div class='container'>
+      <div class='section'>
+        <p class='title'>Com Pedido</p>
+        <p class='data'>Total: {{ComPedido.Total}}</p>
+        <p class='data'>Agendamento:</p>
+        <ul>
+          {{#each Com_Pedido.Agendamento}}
+            <li>{{@key}}: {{this}}</li>
+          {{/each}}
+        </ul>
+        <p class='data'>Ciclo:</p>
+        <ul>
+          {{#each Com_Pedido.Ciclo}}
+            <li>{{@key}}: {{this}}</li>
+          {{/each}}
+        </ul>
+      </div>
+      <div class='section'>
+        <p class='title'>Sem Pedido</p>
+        <p class='data'>Total: {{Sem_Pedido.Total}}</p>
+        <p class='data'>Agendamento:</p>
+        <ul>
+          {{#each Sem_Pedido.Agendamento}}
+            <li>{{@key}}: {{this}}</li>
+          {{/each}}
+        </ul>
+        <p class='data'>Ciclo:</p>
+        <ul>
+          {{#each Sem_Pedido.Ciclo}}
+            <li>{{@key}}: {{this}}</li>
+          {{/each}}
+        </ul>
+
+        <p class='data'>Clientes:</p>
+        <ul>
+          {{#each ClienteSemPedido}}
+            <li>{{codigo}} -- {{razao_social}} -- {{ciclo_agendamento}}</li>
+          {{/each}}
+        </ul>
+      </div>
+      <div class='section'>
+        <p class='title'>Sem Retorno</p>
+        <p class='data'>Total: {{Sem_Retorno.Total}}</p>
+        <p class='data'>Ciclo:</p>
+        <ul>
+          {{#each Sem_Retorno.Ciclo}}
+            <li>{{@key}}: {{this}}</li>
+          {{/each}}
+        </ul>
+
+        <p class='data'>Clientes:</p>
+        <ul>
+          {{#each ClienteSemRetorno}}
+            <li>{{codigo}}
+              --
+              {{razao_social}}
+              --
+              {{ciclo_agendamento}}</li>
+          {{/each}}
+        </ul>
+      </div>
+      
+    </div>
+  </body>
+</html>
