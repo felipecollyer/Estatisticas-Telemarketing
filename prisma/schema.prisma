@@ -12,8 +12,8 @@ model Usuario {
   name        String       @db.VarChar(255)
   email       String       @db.VarChar(255)
   password    String       @db.VarChar(255)
-  created_at  DateTime?    @default(now()) @db.Timestamp(6)
-  updated_at  DateTime?    @default(now()) @db.Timestamp(6)
+  created_at  DateTime?    @default(dbgenerated("date_trunc('day', now())")) @db.Timestamp(0) @map("created_at")
+  updated_at  DateTime?    @default(dbgenerated("date_trunc('day',now())")) @db.Timestamp(0) @map("updated_at")
   formularios Formulario[]
 
   @@map("usuarios")
@@ -28,8 +28,8 @@ model Formulario {
   tipo_agendamento  String    @db.VarChar(255)
   ciclo_agendamento String    @db.VarChar(255)
   usuario_id        Int
-  created_at        DateTime? @default(now()) @db.Timestamp(6)
-  updated_at        DateTime? @default(now()) @db.Timestamp(6)
+  created_at        DateTime? @default(dbgenerated("date_trunc('day', now())")) @db.Timestamp(0) @map("created_at")
+  updated_at        DateTime? @default(dbgenerated("date_trunc('day', now())")) @db.Timestamp(0) @map("updated_at")
   usuario           Usuario   @relation(fields: [usuario_id], references: [id])
 
   @@map("formularios")
