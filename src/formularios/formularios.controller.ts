@@ -21,12 +21,8 @@ export class FormulariosController {
   constructor(private readonly formulariosService: FormulariosService) {}
 
   @Post()
-  create(
-    @Body() createFormularioDto: CreateFormularioDto,
-    @Headers() headers: Record<string, string>,
-  ) {
-    // Aqui você pode ver os cabeçalhos HTTP
-    return this.formulariosService.create(createFormularioDto, headers);
+  create(@Body() createFormularioDto: CreateFormularioDto) {
+    return this.formulariosService.create(createFormularioDto);
   }
 
   @UseInterceptors(LogInterceptor)

@@ -1,4 +1,4 @@
-import { Injectable, Param, Query } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateFormularioDto, UpdateFormularioDto } from './dto/index';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { separarFormulario } from './Handlers/SepararFormulario';
@@ -7,26 +7,20 @@ import { separarFormulario } from './Handlers/SepararFormulario';
 export class FormulariosService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createFormularioDto: CreateFormularioDto, headers) {
+  async create(createFormularioDto: CreateFormularioDto) {
     const Formulario = await this.prisma.formulario.create({
       data: {
         nome_formulario: createFormularioDto.nome_formulario,
 
-
         codigo_cliente: createFormularioDto.codigo_cliente,
-
 
         razao_social: createFormularioDto.razao_social,
 
-
         agendamento: createFormularioDto.agendamento,
-
 
         tipo_agendamento: createFormularioDto.tipo_agendamento,
 
-
         ciclo_agendamento: createFormularioDto.ciclo_agendamento,
-
 
         usuario_id: 2,
       },
@@ -37,8 +31,8 @@ export class FormulariosService {
 
   async findAll(body) {
     const { usuario_id, agendamento, data } = body;
-
     const dataBody = new Date(data);
+
     let formulariosEncontrados = [];
 
     if (agendamento === '24' || agendamento === '48') {
