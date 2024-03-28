@@ -18,7 +18,7 @@ import { PrismaModule } from 'src/prisma/prisma.module';
 export class UsuarioModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(UserIdCheckMiddleware).forRoutes({
-      path: 'usuarios/:id',
+      path: 'user/:id',
       method: RequestMethod.ALL,
     });
   }
