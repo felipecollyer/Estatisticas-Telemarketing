@@ -12,15 +12,21 @@ export class FormulariosService {
       data: {
         nome_formulario: createFormularioDto.nome_formulario,
 
+
         codigo_cliente: createFormularioDto.codigo_cliente,
+
 
         razao_social: createFormularioDto.razao_social,
 
+
         agendamento: createFormularioDto.agendamento,
+
 
         tipo_agendamento: createFormularioDto.tipo_agendamento,
 
+
         ciclo_agendamento: createFormularioDto.ciclo_agendamento,
+
 
         usuario_id: 2,
       },

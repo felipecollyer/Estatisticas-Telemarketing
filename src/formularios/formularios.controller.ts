@@ -11,6 +11,7 @@ import {
   ParseIntPipe,
   Query,
   Res,
+  Res,
 } from '@nestjs/common';
 import { FormulariosService } from './formularios.service';
 import { CreateFormularioDto, UpdateFormularioDto } from './dto/index';
