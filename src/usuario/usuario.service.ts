@@ -10,7 +10,7 @@ import {
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(data: CriarUsuarioDTO) {
+  async Create(data: CriarUsuarioDTO) {
     return this.prisma.usuario.create({
       data: {
         name: data.name,
@@ -20,15 +20,24 @@ export class UserService {
     });
   }
 
-  async readOne() {
+  async FindOne(id: number) {
+    return this.prisma.usuario.findUnique({ where: { id: id } });
+  }
+
+  async FindAll() {
     return this.prisma.usuario.findMany();
   }
 
-  async readAll(id) {
-    return this.prisma.usuario.findUnique({ where: { id } });
+  async UpdateAllData(id: number, data: UpdatePutUsuarioDTO) {
+    return this.prisma.usuario.update({
+      data,
+      where: {
+        id,
+      },
+    });
   }
 
-  async update(id: number, data: UpdatePutUsuarioDTO) {
+  async UpdatePartialsData(id: number, data: UpdatePatchUsuarioDTO) {
     console.log({ data });
     return this.prisma.usuario.update({
       data,
@@ -38,17 +47,7 @@ export class UserService {
     });
   }
 
-  async updatePartials(id: number, data: UpdatePatchUsuarioDTO) {
-    console.log({ data });
-    return this.prisma.usuario.update({
-      data,
-      where: {
-        id,
-      },
-    });
-  }
-
-  async delete({ id }) {
+  async deleteOneUser({ id }) {
     return this.prisma.usuario.delete({ where: { id } });
   }
 }
