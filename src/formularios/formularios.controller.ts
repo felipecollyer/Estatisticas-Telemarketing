@@ -8,16 +8,12 @@ import {
   Delete,
   Patch,
   UseInterceptors,
-  ParseIntPipe,
-  Query,
-  Res,
   Res,
 } from '@nestjs/common';
 import { FormulariosService } from './formularios.service';
 import { CreateFormularioDto, UpdateFormularioDto } from './dto/index';
 import { LogInterceptor } from 'src/interceptors/log.interceptor';
 import { Response } from 'express';
-import { Agendamento } from 'src/generate_data/handlers/Agendamento';
 import { gerarEstatisticas } from './Handlers/GerarEstatisticas';
 
 @Controller('formularios')
