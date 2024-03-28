@@ -1,4 +1,3 @@
-import { stringify } from 'querystring';
 
 export function Ciclo(quantidadeData) {
   const { quantidade } = quantidadeData;

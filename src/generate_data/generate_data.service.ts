@@ -17,6 +17,8 @@ export class GenerateDataService {
   async create(createGenerateDatumDto: CreateGenerateDatumDto) {
     const quantidadeData = createGenerateDatumDto;
 
+    console.log(quantidadeData);
+
     const gerarNomeFormulario = NomeFormulario(quantidadeData);
     const gerarCodigoCliente = CodigoCliente(quantidadeData);
     const gerarRazaoSocial = RazaoSocial(quantidadeData);
@@ -24,6 +26,7 @@ export class GenerateDataService {
     const gerarTipoDeContato = TipoDeContato(quantidadeData);
     const gerarCiclo = Ciclo(quantidadeData);
     const gerarUsuario = Usuario(quantidadeData);
+    console.log(gerarNomeFormulario);
 
     const objetos = gerarNomeFormulario.map((item, index) => {
       return {
@@ -36,7 +39,7 @@ export class GenerateDataService {
         usuario_id: gerarUsuario[index],
       };
     });
-
+    console.log(objetos);
     try {
       const resultados = await this.prisma.formulario.createMany({
         data: objetos,

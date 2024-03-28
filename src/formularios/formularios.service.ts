@@ -1,14 +1,7 @@
 import { Injectable, Param, Query } from '@nestjs/common';
-
-import { CreateFormularioDto } from './dto/create-formulario.dto';
-
-import { UpdateFormularioDto } from './dto/update-formulario.dto';
-
+import { CreateFormularioDto, UpdateFormularioDto } from './dto/index';
 import { PrismaService } from 'src/prisma/prisma.service';
-
-import { Estatisticas_por_agendamento } from './Handlers/Estatisticas_por_agendamento';
-
-import { buscarFormularios } from './Handlers/BuscarFormularios';
+import { separarFormulario } from './Handlers/SepararFormulario';
 
 @Injectable()
 export class FormulariosService {
@@ -37,41 +30,35 @@ export class FormulariosService {
   }
 
   async findAll(body) {
-    console.log(body);
-    const Data_inicio = new Date('2024-03-11');
-    const Data_final = new Date('2024-03-12');
+    const { usuario_id, agendamento, data } = body;
 
-    const formularios = await this.prisma.formulario.findMany({
-      where: {
-        usuario_id: 1,
-        created_at: {
-          gte: Data_inicio,
-          lt: Data_final,
+    const dataBody = new Date(data);
+    let formulariosEncontrados = [];
+
+    if (agendamento === '24' || agendamento === '48') {
+      formulariosEncontrados = await this.prisma.formulario.findMany({
+        where: {
+          usuario_id: usuario_id,
+          agendamento: agendamento,
+          created_at: {
+            gte: dataBody,
+          },
         },
-      },
-    });
+      });
+    } else {
+      formulariosEncontrados = await this.prisma.formulario.findMany({
+        where: {
+          usuario_id: usuario_id,
+          created_at: {
+            gte: dataBody,
+          },
+        },
+      });
+    }
 
-    const formulario_24 = [];
-    const formulario_48 = [];
+    const formularios = separarFormulario(formulariosEncontrados);
 
-    formularios.forEach((formulario) => {
-      if (formulario.agendamento === '24') {
-        formulario_24.push(formulario);
-      } else if (formulario.agendamento === '48') {
-        formulario_48.push(formulario);
-      }
-    });
-
-    const agendamento_24 = Estatisticas_por_agendamento(formulario_24);
-    const agendamento_48 = Estatisticas_por_agendamento(formulario_48);
-
-    const Estatisticas = {
-      usuario_id: body.token_usuario,
-      agendamento_24,
-      agendamento_48,
-    };
-
-    return { Estatisticas };
+    return { agendamento, formularios };
   }
 
   findOne() {

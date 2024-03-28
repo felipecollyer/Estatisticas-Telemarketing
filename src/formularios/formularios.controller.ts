@@ -13,10 +13,11 @@ import {
   Res,
 } from '@nestjs/common';
 import { FormulariosService } from './formularios.service';
-import { CreateFormularioDto } from './dto/create-formulario.dto';
-import { UpdateFormularioDto } from './dto/update-formulario.dto';
+import { CreateFormularioDto, UpdateFormularioDto } from './dto/index';
 import { LogInterceptor } from 'src/interceptors/log.interceptor';
 import { Response } from 'express';
+import { Agendamento } from 'src/generate_data/handlers/Agendamento';
+import { gerarEstatisticas } from './Handlers/GerarEstatisticas';
 
 @Controller('formularios')
 export class FormulariosController {
@@ -33,19 +34,17 @@ export class FormulariosController {
 
   @UseInterceptors(LogInterceptor)
   @Get('visualizar')
-  async findAll(@Body() body, @Res() res: Response) {
-    const { Estatisticas } = await this.formulariosService.findAll(body);
+  async findAll(@Body() body, @Res() response: Response) {
+    const data = await this.formulariosService.findAll(body);
 
-    const { Com_Pedido, Sem_Pedido, Sem_Retorno } = Estatisticas.agendamento_24;
-    const { ClienteSemPedido } = Estatisticas.agendamento_24.Sem_Pedido;
-    const { ClienteSemRetorno } = Estatisticas.agendamento_24.Sem_Retorno;
+    const { formularios } = data;
 
-    return res.render('index', {
-      Com_Pedido,
-      Sem_Pedido,
-      Sem_Retorno,
-      ClienteSemPedido,
-      ClienteSemRetorno,
+    const estatisticasFormularios = gerarEstatisticas(formularios);
+    console.log(formularios);
+
+    return response.render('index', {
+      estatisticasFormularios,
+      formularios,
     });
   }
 
