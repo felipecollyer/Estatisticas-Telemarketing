@@ -1,4 +1,3 @@
-
 export function Ciclo(quantidadeData) {
   const { quantidade } = quantidadeData;
 
