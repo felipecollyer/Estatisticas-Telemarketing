@@ -11,50 +11,53 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 
-import { CriarUsuarioDTO } from './dto/create.usuario.dto';
-import { UpdatePutUsuarioDTO } from './dto/update-put-usuario.dto';
-import { UpdatePatchUsuarioDTO } from './dto/update-patch-usuario.dto';
-import { UsuarioService } from './usuario.service';
+import {
+  CriarUsuarioDTO,
+  UpdatePutUsuarioDTO,
+  UpdatePatchUsuarioDTO,
+} from './dto/index';
+
+import { UserService } from './usuario.service';
 import { LogInterceptor } from 'src/interceptors/log.interceptor';
 
-@Controller('usuarios')
-export class UsuarioController {
-  constructor(private readonly usuarioServico: UsuarioService) {}
+@Controller('user')
+export class UserController {
+  constructor(private readonly userService: UserService) {}
 
   @UseInterceptors(LogInterceptor)
   @Post()
-  async create(@Body() data: CriarUsuarioDTO) {
-    return this.usuarioServico.create(data);
-  }
-
-  @Get()
-  async read() {
-    return this.usuarioServico.readOne();
+  async CreateOne(@Body() data: CriarUsuarioDTO) {
+    return this.userService.Create(data);
   }
 
   @Get(':id')
-  async readOne(@Param('id', ParseIntPipe) id: number) {
-    return this.usuarioServico.readAll({ id });
+  async ReadOne(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.FindOne(id);
+  }
+
+  @Get()
+  async Readall() {
+    return this.userService.FindAll();
   }
 
   @Put(':id')
-  async update(
+  async UpdateAll(
     @Body() data: UpdatePutUsuarioDTO,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    return this.usuarioServico.update(id, data);
+    return this.userService.UpdateAllData(id, data);
   }
 
   @Patch(':id')
-  async updatePartial(
+  async updatePartials(
     @Body() data: UpdatePatchUsuarioDTO,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    return this.usuarioServico.updatePartials(id, data);
+    return this.userService.UpdatePartialsData(id, data);
   }
 
   @Delete(':id')
   async delete(@Param('id', ParseIntPipe) id: number) {
-    return this.usuarioServico.delete({ id });
+    return this.userService.deleteOneUser({ id });
   }
 }

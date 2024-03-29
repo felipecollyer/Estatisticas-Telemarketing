@@ -1,11 +1,24 @@
-export function Tipo_agendamento(formularios) {
-  const totalTiposAgendamento = {};
+export function Tipo_agendamento(ComPedido, SemPedido) {
+  const arrayAgendamento = [ComPedido, SemPedido];
 
-  formularios.forEach((formulario) => {
-    const tipo = formulario.tipo_agendamento;
-    totalTiposAgendamento[tipo] = totalTiposAgendamento[tipo]
-      ? totalTiposAgendamento[tipo] + 1
-      : 1;
+  const totalTiposAgendamento = {
+    ComPedido: {},
+    SemPedido: {},
+  };
+
+  arrayAgendamento.forEach((formularios, index) => {
+    formularios.forEach((data) => {
+      const agendamento = data.tipo_agendamento;
+      totalTiposAgendamento[Object.keys(totalTiposAgendamento)[index]][
+        agendamento
+      ] = totalTiposAgendamento[Object.keys(totalTiposAgendamento)[index]][
+        agendamento
+      ]
+        ? totalTiposAgendamento[Object.keys(totalTiposAgendamento)[index]][
+            agendamento
+          ] + 1
+        : 1;
+    });
   });
 
   return totalTiposAgendamento;

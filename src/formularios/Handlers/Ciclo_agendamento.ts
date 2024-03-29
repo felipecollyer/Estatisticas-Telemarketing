@@ -1,12 +1,26 @@
-export function Ciclo_agendamento(formularios) {
-  const totalCiclosAgendamento = {};
+export function Ciclo_agendamento(ComPedido, SemPedido, SemRetorno) {
+  const arrayCiclo = [ComPedido, SemPedido, SemRetorno];
 
-  formularios.forEach((formulario) => {
-    const ciclo = formulario.ciclo_agendamento;
-    totalCiclosAgendamento[ciclo] = totalCiclosAgendamento[ciclo]
-      ? totalCiclosAgendamento[ciclo] + 1
-      : 1;
+  const quantidadeTotalCiclo = {
+    ComPedido: {},
+    SemPedido: {},
+    SemRetorno: {},
+  };
+
+  arrayCiclo.forEach((formularios, index) => {
+    formularios.forEach((data) => {
+      const agendamento = data.ciclo_agendamento;
+      quantidadeTotalCiclo[Object.keys(quantidadeTotalCiclo)[index]][
+        agendamento
+      ] = quantidadeTotalCiclo[Object.keys(quantidadeTotalCiclo)[index]][
+        agendamento
+      ]
+        ? quantidadeTotalCiclo[Object.keys(quantidadeTotalCiclo)[index]][
+            agendamento
+          ] + 1
+        : 1;
+    });
   });
 
-  return totalCiclosAgendamento;
+  return quantidadeTotalCiclo;
 }
