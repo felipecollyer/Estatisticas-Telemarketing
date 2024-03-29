@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulários e Estatísticas</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h3, h4 {
+            color: #555;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .highlight {
+            background-color: #ffd700;
+            font-weight: bold;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h2>Formulários Preenchidos</h2>
+
+        <h3>Com Pedido</h3>
+        <table>
+            <tr>
+                <th>Agendamento</th>
+                <th>Tipo de Agendamento</th>
+                <th>Ciclo</th>
+            </tr>
+            {{#each forms.ComPedido}}
+            <tr>
+                <td>{{this.agendamento}}</td>
+                <td>{{this.tipo_agendamento}}</td>
+                <td>{{this.ciclo_agendamento}}</td>
+            </tr>
+            {{/each}}
+        </table>
+
+        <h3>Sem Pedido</h3>
+        <table>
+            <tr>
+                <th>Agendamento</th>
+                <th>Código do Cliente</th>
+                <th>Razão Social</th>
+                <th>Tipo de Agendamento</th>
+                <th>Ciclo</th>
+            </tr>
+            {{#each forms.SemPedido}}
+            <tr>
+                <td>{{this.agendamento}}</td>
+                <td>{{this.codigo_cliente}}</td>
+                <td>{{this.razao_social}}</td>
+                <td>{{this.tipo_agendamento}}</td>
+                <td>{{this.ciclo_agendamento}}</td>
+            </tr>
+            {{/each}}
+        </table>
+
+        <h3>Sem Retorno</h3>
+        <table>
+            <tr>
+                <th>Agendamento</th>
+                <th>Código do Cliente</th>
+                <th>Razão Social</th>
+                <th>Ciclo</th>
+            </tr>
+            {{#each forms.SemPedido}}
+            <tr>
+                <td>{{this.agendamento}}</td>
+                <td>{{this.codigo_cliente}}</td>
+                <td>{{this.razao_social}}</td>
+                <td>{{this.ciclo_agendamento}}</td>
+            </tr>
+            {{/each}}
+        </table>
+
+        <h2>Estatísticas</h2>
+
+        <h3>Tipos de Agendamento</h3>
+
+        <h4>Com Pedido</h4>
+        <table>
+            <tr>
+                <th>Tipo de Agendamento</th>
+                <th>Total</th>
+            </tr>
+            {{#each estatisticasFormularios.totalTipoAgendamento.ComPedido}}
+            <tr>
+                <td>{{@key}}</td>
+                <td>{{this}}</td>
+            </tr>
+            {{/each}}
+        </table>
+
+        <h4>Sem Pedido</h4>
+        <table>
+            <tr>
+                <th>Tipo de Agendamento</th>
+                <th>Total</th>
+            </tr>
+            {{#each estatisticasFormularios.totalTipoAgendamento.SemPedido}}
+            <tr>
+                <td>{{@key}}</td>
+                <td>{{this}}</td>
+            </tr>
+            {{/each}}
+        </table>
+
+        <h3>Total de Ciclos</h3>
+
+        <h4>Com Pedido</h4>
+        <table>
+            <tr>
+                <th>Ciclo</th>
+                <th>Total</th>
+            </tr>
+            {{#each estatisticasFormularios.totalCiclo.ComPedido}}
+            <tr>
+                <td>{{@key}}</td>
+                <td>{{this}}</td>
+            </tr>
+            {{/each}}
+        </table>
+
+        <h4>Sem Pedido</h4>
+        <table>
+            <tr>
+                <th>Ciclo</th>
+                <th>Total</th>
+            </tr>
+            {{#each estatisticasFormularios.totalCiclo.SemPedido}}
+            <tr>
+                <td>Ciclo {{@key}}</td>
+                <td>{{this}}</td>
+            </tr>
+            {{/each}}
+        </table>
+
+        <h4>Sem Retorno</h4>
+        <table>
+            <tr>
+                <th>Ciclo</th>
+                <th>Total</th>
+            </tr>
+            {{#each estatisticasFormularios.totalCiclo.SemRetorno}}
+            <tr>
+                <td>{{@key}}</td>
+                <td>{{this}}</td>
+            </tr>
+            {{/each}}
+        </table>
+
+        <h3>Contatos Realizados</h3>
+
+        <table>
+            <tr>
+                <th>Tipo</th>
+                <th>Total</th>
+            </tr>
+            {{#each estatisticasFormularios.total}}
+            <tr>
+                <td>{{@key}}</td>
+                <td>{{this}}</td>
+            </tr>
+            {{/each}}
+        </table>
+    </div>
+</body>
+</html>
