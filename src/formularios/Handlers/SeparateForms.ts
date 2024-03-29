@@ -1,4 +1,4 @@
-export function separarFormulario(data) {
+export function separateForms(data) {
   const formulariosPedido = data.filter(
     (formulario) => formulario.nome_formulario === 'Pedido',
   );

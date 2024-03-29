@@ -1,91 +1,83 @@
 import { Injectable, Param, Query } from '@nestjs/common';
 import { CreateFormularioDto, UpdateFormularioDto } from './dto/index';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { separarFormulario } from './Handlers/SepararFormulario';
+import { separateForms } from './Handlers/SeparateForms';
 
 @Injectable()
 export class FormulariosService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createFormularioDto: CreateFormularioDto, headers) {
-    const Formulario = await this.prisma.formulario.create({
+  async Create(createFormularioDto: CreateFormularioDto, headers) {
+    const forms = await this.prisma.formulario.create({
       data: {
         nome_formulario: createFormularioDto.nome_formulario,
-
-
         codigo_cliente: createFormularioDto.codigo_cliente,
-
-
         razao_social: createFormularioDto.razao_social,
-
-
         agendamento: createFormularioDto.agendamento,
-
-
         tipo_agendamento: createFormularioDto.tipo_agendamento,
-
-
         ciclo_agendamento: createFormularioDto.ciclo_agendamento,
-
-
-        usuario_id: 2,
+        usuario_id: headers,
       },
     });
 
-    return `Formulario Salvo com sucesso.`;
+    return { forms };
   }
 
-  async findAll(body) {
+  async ReadAllDay(body) {
     const { usuario_id, agendamento, data } = body;
 
-    const dataBody = new Date(data);
-    let formulariosEncontrados = [];
+    const findData = new Date(data);
+    let foundForms = [];
 
     if (agendamento === '24' || agendamento === '48') {
-      formulariosEncontrados = await this.prisma.formulario.findMany({
+      foundForms = await this.prisma.formulario.findMany({
         where: {
           usuario_id: usuario_id,
           agendamento: agendamento,
           created_at: {
-            gte: dataBody,
+            gte: findData,
           },
         },
       });
     } else {
-      formulariosEncontrados = await this.prisma.formulario.findMany({
+      foundForms = await this.prisma.formulario.findMany({
         where: {
           usuario_id: usuario_id,
           created_at: {
-            gte: dataBody,
+            gte: findData,
           },
         },
       });
     }
 
-    const formularios = separarFormulario(formulariosEncontrados);
+    const forms = separateForms(foundForms);
 
-    return { agendamento, formularios };
+    return { agendamento, forms };
   }
 
-  findOne() {
-    return `This action returns a formulario`;
+  async FindOne(id) {
+    const foundForm = await this.prisma.formulario.findUnique({
+      where: { id: id },
+    });
+    return { foundForm };
   }
 
   update(id: number, updateFormularioDto: UpdateFormularioDto) {
     return `This action updates a #${id} formulario`;
   }
 
-  async remove(id: number) {
-    const usuario_id = 1;
+  async deleteOne(id, headers) {
+    const idHeader = parseInt(headers.id);
 
     try {
-      const x = await this.prisma.formulario.delete({
-        where: { id, usuario_id },
+      const formDeleted = await this.prisma.formulario.delete({
+        where: { id: id, usuario_id: idHeader },
       });
-    } catch (x) {
-      return { error: x };
+      return {
+        formDeleted,
+      };
+    } catch (formDeleted) {
+      return { error: formDeleted };
     }
-
-    return `This action removes a #${id} formulario`;
   }
 }

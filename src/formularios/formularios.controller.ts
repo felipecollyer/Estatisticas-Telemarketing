@@ -9,6 +9,7 @@ import {
   Patch,
   UseInterceptors,
   Res,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { FormulariosService } from './formularios.service';
 import { CreateFormularioDto, UpdateFormularioDto } from './dto/index';
@@ -16,7 +17,7 @@ import { LogInterceptor } from 'src/interceptors/log.interceptor';
 import { Response } from 'express';
 import { gerarEstatisticas } from './Handlers/GerarEstatisticas';
 
-@Controller('formularios')
+@Controller('forms')
 export class FormulariosController {
   constructor(private readonly formulariosService: FormulariosService) {}
 
@@ -25,29 +26,27 @@ export class FormulariosController {
     @Body() createFormularioDto: CreateFormularioDto,
     @Headers() headers: Record<string, string>,
   ) {
-    // Aqui você pode ver os cabeçalhos HTTP
-    return this.formulariosService.create(createFormularioDto, headers);
+    return this.formulariosService.Create(createFormularioDto, headers);
   }
 
   @UseInterceptors(LogInterceptor)
-  @Get('visualizar')
-  async findAll(@Body() body, @Res() response: Response) {
-    const data = await this.formulariosService.findAll(body);
+  @Get()
+  async readDay(@Body() body, @Res() response: Response) {
+    const data = await this.formulariosService.ReadAllDay(body);
 
-    const { formularios } = data;
+    const { forms } = data;
 
-    const estatisticasFormularios = gerarEstatisticas(formularios);
-    console.log(formularios);
+    const estatisticasFormularios = gerarEstatisticas(forms);
 
     return response.render('index', {
       estatisticasFormularios,
-      formularios,
+      forms,
     });
   }
 
-  @Get()
-  findOne() {
-    return this.formulariosService.findOne();
+  @Get(':id')
+  readOneForm(@Param('id', ParseIntPipe) id: number) {
+    return this.formulariosService.FindOne(id);
   }
 
   @Patch(':id')
@@ -59,7 +58,10 @@ export class FormulariosController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.formulariosService.remove(+id);
+  removeOne(
+    @Param('id', ParseIntPipe) id: number,
+    @Headers() headers: Record<string, string>,
+  ) {
+    return this.formulariosService.deleteOne(id, headers);
   }
 }
