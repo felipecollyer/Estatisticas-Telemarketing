@@ -8,8 +8,6 @@ import {
   Delete,
   Patch,
   UseInterceptors,
-  ParseIntPipe,
-  Query,
   Res,
 } from '@nestjs/common';
 import { FormulariosService } from './formularios.service';
