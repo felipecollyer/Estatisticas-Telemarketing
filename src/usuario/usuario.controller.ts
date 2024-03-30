@@ -15,6 +15,7 @@ import {
   CriarUsuarioDTO,
   UpdatePutUsuarioDTO,
   UpdatePatchUsuarioDTO,
+  LoginUserDTO,
 } from './dto/index';
 
 import { UserService } from './usuario.service';
@@ -30,13 +31,18 @@ export class UserController {
     return this.userService.Create(data);
   }
 
+  @Post('login') // Rota para o login
+  async Login(@Body() data: LoginUserDTO) {
+    return this.userService.CheckLogin(data);
+  }
+
   @Get(':id')
-  async ReadOne(@Param('id', ParseIntPipe) id: number) {
+  async SearchOne(@Param('id', ParseIntPipe) id: number) {
     return this.userService.FindOne(id);
   }
 
   @Get()
-  async Readall() {
+  async SearchAll() {
     return this.userService.FindAll();
   }
 
@@ -58,6 +64,6 @@ export class UserController {
 
   @Delete(':id')
   async delete(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.deleteOneUser({ id });
+    return this.userService.deleteOneUser(id);
   }
 }

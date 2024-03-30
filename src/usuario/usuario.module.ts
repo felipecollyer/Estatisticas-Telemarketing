@@ -19,7 +19,7 @@ export class UsuarioModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(UserIdCheckMiddleware).forRoutes({
       path: 'user/:id',
-      method: RequestMethod.ALL,
+      method: RequestMethod.GET,
     });
   }
 }
