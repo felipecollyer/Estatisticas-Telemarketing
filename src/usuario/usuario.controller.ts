@@ -15,6 +15,7 @@ import {
   CriarUsuarioDTO,
   UpdatePutUsuarioDTO,
   UpdatePatchUsuarioDTO,
+  LoginUserDTO,
 } from './dto/index';
 
 import { UserService } from './usuario.service';
@@ -26,18 +27,23 @@ export class UserController {
 
   @UseInterceptors(LogInterceptor)
   @Post()
-  async CreateOne(@Body() data: CriarUsuarioDTO) {
-    return this.userService.Create(data);
+  async createUser(@Body() data: CriarUsuarioDTO) {
+    return this.userService.createUser(data);
+  }
+
+  @Post('login')
+  async Login(@Body() data: LoginUserDTO) {
+    return this.userService.Login(data);
   }
 
   @Get(':id')
-  async ReadOne(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.FindOne(id);
+  async getUser(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.getUser(id);
   }
 
   @Get()
-  async Readall() {
-    return this.userService.FindAll();
+  async getAllUsers() {
+    return this.userService.getAllUsers();
   }
 
   @Put(':id')
@@ -57,7 +63,7 @@ export class UserController {
   }
 
   @Delete(':id')
-  async delete(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.deleteOneUser({ id });
+  async deleteUser(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.deleteUser(id);
   }
 }

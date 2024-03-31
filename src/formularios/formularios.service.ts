@@ -7,9 +7,8 @@ import { separateForms } from './Handlers/SeparateForms';
 export class FormulariosService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createForms(createFormularioDto: CreateFormularioDto, headers) {
-    const id_user = parseInt(headers.id_user);
-    const forms = await this.prisma.formulario.create({
+  async create(createFormularioDto: CreateFormularioDto) {
+    const Formulario = await this.prisma.formulario.create({
       data: {
         nome_formulario: createFormularioDto.nome_formulario,
         codigo_cliente: createFormularioDto.codigo_cliente,
@@ -17,14 +16,15 @@ export class FormulariosService {
         agendamento: createFormularioDto.agendamento,
         tipo_agendamento: createFormularioDto.tipo_agendamento,
         ciclo_agendamento: createFormularioDto.ciclo_agendamento,
-        usuario_id: id_user,
+
+        usuario_id: 2,
       },
     });
 
     return { forms };
   }
 
-  async getForms(body) {
+  async findAll(body) {
     const { usuario_id, agendamento, data } = body;
 
     const findData = new Date(data);
@@ -56,23 +56,20 @@ export class FormulariosService {
     return { agendamento, forms };
   }
 
-  async getForm(id) {
-    const foundForm = await this.prisma.formulario.findUnique({
-      where: { id: id },
-    });
-    return { foundForm };
+  findOne() {
+    return `This action returns a formulario`;
   }
 
   async updateForm(id: number, updateFormularioDto: UpdateFormularioDto) {
     return `This action updates a #${id} formulario`;
   }
 
-  async deleteForm(id, headers) {
-    const id_user = parseInt(headers.id_user);
+  async remove(id: number) {
+    const usuario_id = 1;
 
     try {
-      const formDeleted = await this.prisma.formulario.delete({
-        where: { id: id, usuario_id: id_user },
+      const x = await this.prisma.formulario.delete({
+        where: { id, usuario_id },
       });
       return {
         formDeleted,

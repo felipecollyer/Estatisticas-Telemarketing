@@ -22,17 +22,14 @@ export class FormulariosController {
   constructor(private readonly formulariosService: FormulariosService) {}
 
   @Post()
-  createForms(
-    @Body() createFormularioDto: CreateFormularioDto,
-    @Headers() headers: Record<string, string>,
-  ) {
-    return this.formulariosService.createForms(createFormularioDto, headers);
+  create(@Body() createFormularioDto: CreateFormularioDto) {
+    return this.formulariosService.create(createFormularioDto);
   }
 
   @UseInterceptors(LogInterceptor)
-  @Get()
-  async getForms(@Body() body, @Res() response: Response) {
-    const data = await this.formulariosService.getForms(body);
+  @Get('visualizar')
+  async findAll(@Body() body, @Res() response: Response) {
+    const data = await this.formulariosService.findAll(body);
 
     const { forms } = data;
 
@@ -44,9 +41,9 @@ export class FormulariosController {
     });
   }
 
-  @Get(':id')
-  getForm(@Param('id', ParseIntPipe) id: number) {
-    return this.formulariosService.getForm(id);
+  @Get()
+  findOne() {
+    return this.formulariosService.findOne();
   }
 
   @Patch(':id')
@@ -58,10 +55,7 @@ export class FormulariosController {
   }
 
   @Delete(':id')
-  deleteForm(
-    @Param('id', ParseIntPipe) id: number,
-    @Headers() headers: Record<string, string>,
-  ) {
-    return this.formulariosService.deleteForm(id, headers);
+  remove(@Param('id') id: string) {
+    return this.formulariosService.remove(+id);
   }
 }
