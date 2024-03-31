@@ -7,7 +7,7 @@ import { separateForms } from './Handlers/SeparateForms';
 export class FormulariosService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async Create(createFormularioDto: CreateFormularioDto, headers) {
+  async createForms(createFormularioDto: CreateFormularioDto, headers) {
     const forms = await this.prisma.formulario.create({
       data: {
         nome_formulario: createFormularioDto.nome_formulario,
@@ -23,7 +23,7 @@ export class FormulariosService {
     return { forms };
   }
 
-  async ReadAllDay(body) {
+  async getForms(body) {
     const { usuario_id, agendamento, data } = body;
 
     const findData = new Date(data);
@@ -55,18 +55,18 @@ export class FormulariosService {
     return { agendamento, forms };
   }
 
-  async FindOne(id) {
+  async getForm(id) {
     const foundForm = await this.prisma.formulario.findUnique({
       where: { id: id },
     });
     return { foundForm };
   }
 
-  update(id: number, updateFormularioDto: UpdateFormularioDto) {
+  async updateForm(id: number, updateFormularioDto: UpdateFormularioDto) {
     return `This action updates a #${id} formulario`;
   }
 
-  async deleteOne(id, headers) {
+  async deleteForm(id, headers) {
     const idHeader = parseInt(headers.id);
 
     try {
