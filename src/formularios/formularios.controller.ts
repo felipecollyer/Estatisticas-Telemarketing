@@ -22,17 +22,17 @@ export class FormulariosController {
   constructor(private readonly formulariosService: FormulariosService) {}
 
   @Post()
-  create(
+  createForms(
     @Body() createFormularioDto: CreateFormularioDto,
     @Headers() headers: Record<string, string>,
   ) {
-    return this.formulariosService.Create(createFormularioDto, headers);
+    return this.formulariosService.createForms(createFormularioDto, headers);
   }
 
   @UseInterceptors(LogInterceptor)
   @Get()
-  async readDay(@Body() body, @Res() response: Response) {
-    const data = await this.formulariosService.ReadAllDay(body);
+  async getForms(@Body() body, @Res() response: Response) {
+    const data = await this.formulariosService.getForms(body);
 
     const { forms } = data;
 
@@ -45,23 +45,23 @@ export class FormulariosController {
   }
 
   @Get(':id')
-  readOneForm(@Param('id', ParseIntPipe) id: number) {
-    return this.formulariosService.FindOne(id);
+  getForm(@Param('id', ParseIntPipe) id: number) {
+    return this.formulariosService.getForm(id);
   }
 
   @Patch(':id')
-  update(
+  updateForm(
     @Param('id') id: string,
     @Body() updateFormularioDto: UpdateFormularioDto,
   ) {
-    return this.formulariosService.update(+id, updateFormularioDto);
+    return this.formulariosService.updateForm(+id, updateFormularioDto);
   }
 
   @Delete(':id')
-  removeOne(
+  deleteForm(
     @Param('id', ParseIntPipe) id: number,
     @Headers() headers: Record<string, string>,
   ) {
-    return this.formulariosService.deleteOne(id, headers);
+    return this.formulariosService.deleteForm(id, headers);
   }
 }
