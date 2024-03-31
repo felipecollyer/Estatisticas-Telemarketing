@@ -11,28 +11,28 @@ import {
   Res,
   ParseIntPipe,
 } from '@nestjs/common';
-import { FormulariosService } from './formularios.service';
+import { FormsService } from './Forms.service';
 import { CreateFormularioDto, UpdateFormularioDto } from './dto/index';
 import { LogInterceptor } from 'src/interceptors/log.interceptor';
 import { Response } from 'express';
 import { gerarEstatisticas } from './Handlers/GerarEstatisticas';
 
 @Controller('forms')
-export class FormulariosController {
-  constructor(private readonly formulariosService: FormulariosService) {}
+export class FormsController {
+  constructor(private readonly formsService: FormsService) {}
 
   @Post()
   createForms(
     @Body() createFormularioDto: CreateFormularioDto,
     @Headers() headers: Record<string, string>,
   ) {
-    return this.formulariosService.createForms(createFormularioDto, headers);
+    return this.formsService.createForms(createFormularioDto, headers);
   }
 
   @UseInterceptors(LogInterceptor)
   @Get()
   async getForms(@Body() body, @Res() response: Response) {
-    const data = await this.formulariosService.getForms(body);
+    const data = await this.formsService.getForms(body);
 
     const { forms } = data;
 
@@ -46,7 +46,7 @@ export class FormulariosController {
 
   @Get(':id')
   getForm(@Param('id', ParseIntPipe) id: number) {
-    return this.formulariosService.getForm(id);
+    return this.formsService.getForm(id);
   }
 
   @Patch(':id')
@@ -54,7 +54,7 @@ export class FormulariosController {
     @Param('id') id: string,
     @Body() updateFormularioDto: UpdateFormularioDto,
   ) {
-    return this.formulariosService.updateForm(+id, updateFormularioDto);
+    return this.formsService.updateForm(+id, updateFormularioDto);
   }
 
   @Delete(':id')
@@ -62,6 +62,6 @@ export class FormulariosController {
     @Param('id', ParseIntPipe) id: number,
     @Headers() headers: Record<string, string>,
   ) {
-    return this.formulariosService.deleteForm(id, headers);
+    return this.formsService.deleteForm(id, headers);
   }
 }

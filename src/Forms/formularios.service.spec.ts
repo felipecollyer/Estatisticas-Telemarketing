@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { FormulariosService } from './formularios.service';
+import { FormulariosService } from './Forms.service';
 
 describe('FormulariosService', () => {
   let service: FormulariosService;

@@ -4,7 +4,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { separateForms } from './Handlers/SeparateForms';
 
 @Injectable()
-export class FormulariosService {
+export class FormsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async createForms(createFormularioDto: CreateFormularioDto, headers) {

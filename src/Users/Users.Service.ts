@@ -9,7 +9,7 @@ import {
 import { ValidePassword } from './Handlers/ValidatePassword';
 import { errorMessages } from './errorMessages';
 @Injectable()
-export class UserService {
+export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
   async createUser(data: CriarUsuarioDTO) {

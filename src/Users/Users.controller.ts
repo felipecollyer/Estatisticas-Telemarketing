@@ -18,32 +18,32 @@ import {
   LoginUserDTO,
 } from './dto/index';
 
-import { UserService } from './usuario.service';
+import { UsersService } from './Users.Service';
 import { LogInterceptor } from 'src/interceptors/log.interceptor';
 
 @Controller('user')
-export class UserController {
-  constructor(private readonly userService: UserService) {}
+export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
 
   @UseInterceptors(LogInterceptor)
   @Post()
   async createUser(@Body() data: CriarUsuarioDTO) {
-    return this.userService.createUser(data);
+    return this.usersService.createUser(data);
   }
 
   @Post('login')
   async Login(@Body() data: LoginUserDTO) {
-    return this.userService.Login(data);
+    return this.usersService.Login(data);
   }
 
   @Get(':id')
   async getUser(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.getUser(id);
+    return this.usersService.getUser(id);
   }
 
   @Get()
   async getAllUsers() {
-    return this.userService.getAllUsers();
+    return this.usersService.getAllUsers();
   }
 
   @Put(':id')
@@ -51,7 +51,7 @@ export class UserController {
     @Body() data: UpdatePutUsuarioDTO,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    return this.userService.UpdateAllData(id, data);
+    return this.usersService.UpdateAllData(id, data);
   }
 
   @Patch(':id')
@@ -59,11 +59,11 @@ export class UserController {
     @Body() data: UpdatePatchUsuarioDTO,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    return this.userService.UpdatePartialsData(id, data);
+    return this.usersService.UpdatePartialsData(id, data);
   }
 
   @Delete(':id')
   async deleteUser(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.deleteUser(id);
+    return this.usersService.deleteUser(id);
   }
 }

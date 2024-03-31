@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { FormulariosController } from './formularios.controller';
-import { FormulariosService } from './formularios.service';
+import { FormulariosController } from './Forms.controller';
+import { FormulariosService } from './Forms.service';
 
 describe('FormulariosController', () => {
   let controller: FormulariosController;
