@@ -12,7 +12,7 @@ import { errorMessages } from './errorMessages';
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async Create(data: CriarUsuarioDTO) {
+  async createUser(data: CriarUsuarioDTO) {
     const passwordsMatch = ValidePassword(data);
 
     try {
@@ -50,7 +50,7 @@ export class UserService {
     }
   }
 
-  async CheckLogin(data: LoginUserDTO) {
+  async Login(data: LoginUserDTO) {
     try {
       const user = await this.prisma.usuario.findFirst({
         where: { email: data.email },
@@ -65,7 +65,7 @@ export class UserService {
     return data;
   }
 
-  async FindOne(id: number) {
+  async getUser(id: number) {
     try {
       if (id <= 0) {
         throw new Error(errorMessages.ID_INVALID);
@@ -90,7 +90,7 @@ export class UserService {
     }
   }
 
-  async FindAll() {
+  async getAllUsers() {
     try {
       const foundUsers = await this.prisma.usuario.findMany({
         select: {
@@ -159,7 +159,7 @@ export class UserService {
     }
   }
 
-  async deleteOneUser(id) {
+  async deleteUser(id) {
     const usuario = await this.prisma.usuario.findFirst({
       where: {
         id: id,
