@@ -8,6 +8,7 @@ export class FormulariosService {
   constructor(private readonly prisma: PrismaService) {}
 
   async createForms(createFormularioDto: CreateFormularioDto, headers) {
+    const id_user = parseInt(headers.id_user);
     const forms = await this.prisma.formulario.create({
       data: {
         nome_formulario: createFormularioDto.nome_formulario,
@@ -16,7 +17,7 @@ export class FormulariosService {
         agendamento: createFormularioDto.agendamento,
         tipo_agendamento: createFormularioDto.tipo_agendamento,
         ciclo_agendamento: createFormularioDto.ciclo_agendamento,
-        usuario_id: headers,
+        usuario_id: id_user,
       },
     });
 
@@ -67,11 +68,11 @@ export class FormulariosService {
   }
 
   async deleteForm(id, headers) {
-    const idHeader = parseInt(headers.id);
+    const id_user = parseInt(headers.id_user);
 
     try {
       const formDeleted = await this.prisma.formulario.delete({
-        where: { id: id, usuario_id: idHeader },
+        where: { id: id, usuario_id: id_user },
       });
       return {
         formDeleted,
