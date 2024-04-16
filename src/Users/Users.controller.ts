@@ -26,7 +26,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @UseInterceptors(LogInterceptor)
-  @Post()
+  @Post('register')
   async createUser(@Body() data: CriarUsuarioDTO) {
     return this.usersService.createUser(data);
   }
