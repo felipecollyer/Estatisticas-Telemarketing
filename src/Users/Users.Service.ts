@@ -28,23 +28,32 @@ export class UsersService {
         throw new Error(errorMessages.EMAIL_ALREADY_REGISTERED);
       }
 
+      const existingAdmin = await this.prisma.usuario.count();
+
+      const access = existingAdmin ? 'pendente' : 'admin';
+
       const newUser = await this.prisma.usuario.create({
         data: {
           name: data.name,
           email: data.email,
-          password: data.email,
+          password: data.password,
+          access: access,
         },
       });
 
       if (!newUser) {
         throw new Error(errorMessages.FAILED_TO_CREATE_USER);
-      } else {
-        return {
-          name: newUser.name,
-          email: newUser.email,
-          msg: 'Registrado com sucesso',
-        };
       }
+
+      return {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+        password: newUser.password,
+        access: newUser.access,
+        created_at: new Date(),
+        updated_at: new Date(),
+      };
     } catch (error) {
       return { Erro: `${error.message}` };
     }
