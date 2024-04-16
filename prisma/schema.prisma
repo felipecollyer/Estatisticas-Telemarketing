@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  engineType = "binary"
 }
 
 datasource db {
@@ -12,6 +13,7 @@ model Usuario {
   name        String       @db.VarChar(255)
   email       String       @db.VarChar(255)
   password    String       @db.VarChar(255)
+  access      String       @db.VarChar(15)
   created_at  DateTime?    @default(dbgenerated("date_trunc('day', now())")) @db.Timestamp(0) @map("created_at")
   updated_at  DateTime?    @default(dbgenerated("date_trunc('day',now())")) @db.Timestamp(0) @map("updated_at")
   formularios Formulario[]
