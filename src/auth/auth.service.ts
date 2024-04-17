@@ -7,7 +7,6 @@ import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthRegisterDTO } from './dto/auth-register-dto';
 import { UsersService } from 'src/Users/Users.Service';
-import { CriarUsuarioDTO } from 'src/Users/dto';
 import { Usuario } from '@prisma/client';
 
 @Injectable()
@@ -74,15 +73,17 @@ export class AuthService {
     });
   }
 
-  async approveUser(id, acessUser, token) {
+  async approveUser(data, token) {
+    const { id, accessGranted } = data;
+
     const { acess } = await this.checkToken(token);
-    const data = { access: acessUser };
+    const dataUpdate = { access: accessGranted };
 
     if (acess === 'admin') {
       const NewDataUpdate = await this.prisma.usuario.update({
-        data,
+        data: dataUpdate,
         where: {
-          id,
+          id: parseInt(id),
         },
         select: {
           id: true,

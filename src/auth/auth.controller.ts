@@ -12,6 +12,7 @@ import {
 import { AuthService } from './auth.service';
 import { AuthLoginDTO } from './dto/auth-login-dto';
 import { AuthRegisterDTO } from './dto/auth-register-dto';
+import { ApproveUserDTO } from './dto/auth-approveUser-dta';
 import { AuthForgetDTO } from './dto/auth-forget-dto ';
 import { Body } from '@nestjs/common';
 import { AuthResetDTO } from './dto/auth-reset-dto';
@@ -37,16 +38,12 @@ export class AuthController {
   }
 
   @Post('approveUser')
-  async approveUser(
-    @Query('id', ParseIntPipe) id: number,
-    @Query('acess') acessUser: string,
-    @Req() request: Request,
-  ) {
+  async approveUser(@Query() data: ApproveUserDTO, @Req() request: Request) {
     const authHeader = request.headers['authorization'];
 
     if (authHeader) {
       const token = authHeader.split(' ')[1];
-      return this.authService.approveUser(id, acessUser, token);
+      return this.authService.approveUser(data, token);
     } else {
       throw new UnauthorizedException('Token nao valido');
     }
