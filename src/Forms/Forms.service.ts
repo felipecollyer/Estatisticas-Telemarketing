@@ -1,27 +1,35 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateFormularioDto, UpdateFormularioDto } from './dto/index';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { separateForms } from './Handlers/SeparateForms';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class FormsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly authService: AuthService,
+  ) {}
 
-  async createForms(createFormularioDto: CreateFormularioDto, headers) {
-    const id_user = parseInt(headers.id_user);
-    const forms = await this.prisma.formulario.create({
-      data: {
-        nome_formulario: createFormularioDto.nome_formulario,
-        codigo_cliente: createFormularioDto.codigo_cliente,
-        razao_social: createFormularioDto.razao_social,
-        agendamento: createFormularioDto.agendamento,
-        tipo_agendamento: createFormularioDto.tipo_agendamento,
-        ciclo_agendamento: createFormularioDto.ciclo_agendamento,
-        usuario_id: id_user,
-      },
-    });
+  async createForms(createFormularioDto: CreateFormularioDto, token) {
+    const data = await this.authService.checkToken(token);
 
-    return { forms };
+    if (data.acess === 'pos-venda') {
+      const forms = await this.prisma.formulario.create({
+        data: {
+          nome_formulario: createFormularioDto.nome_formulario,
+          codigo_cliente: createFormularioDto.codigo_cliente,
+          razao_social: createFormularioDto.razao_social,
+          agendamento: createFormularioDto.agendamento,
+          tipo_agendamento: createFormularioDto.tipo_agendamento,
+          ciclo_agendamento: createFormularioDto.ciclo_agendamento,
+          usuario_id: data.id,
+        },
+      });
+      return { forms };
+    } else {
+      throw new UnauthorizedException('Acesso negado.');
+    }
   }
 
   async getForms(body) {

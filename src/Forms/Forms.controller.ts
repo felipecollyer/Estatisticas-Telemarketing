@@ -9,7 +9,9 @@ import {
   Patch,
   UseInterceptors,
   Res,
+  Req,
   ParseIntPipe,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { FormsService } from './Forms.service';
 import { CreateFormularioDto, UpdateFormularioDto } from './dto/index';
@@ -24,9 +26,16 @@ export class FormsController {
   @Post()
   createForms(
     @Body() createFormularioDto: CreateFormularioDto,
-    @Headers() headers: Record<string, string>,
+    @Req() request: Request,
   ) {
-    return this.formsService.createForms(createFormularioDto, headers);
+    const authHeader = request.headers['authorization'];
+
+    if (authHeader) {
+      const token = authHeader.split(' ')[1];
+      return this.formsService.createForms(createFormularioDto, token);
+    } else {
+      throw new UnauthorizedException('Token nao valido');
+    }
   }
 
   @UseInterceptors(LogInterceptor)
