@@ -17,8 +17,6 @@ import { AuthForgetDTO } from './dto/auth-forget-dto ';
 import { Body } from '@nestjs/common';
 import { AuthResetDTO } from './dto/auth-reset-dto';
 import { UsersService } from 'src/Users/Users.Service';
-import { request } from 'express';
-import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
 
 @Controller('auth')
 export class AuthController {
