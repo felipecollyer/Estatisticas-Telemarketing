@@ -1,11 +1,9 @@
 import {
   Controller,
-  Param,
+  Body,
   Patch,
   Post,
-  ParseIntPipe,
   Query,
-  Headers,
   Req,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -13,8 +11,6 @@ import { AuthService } from './auth.service';
 import { AuthLoginDTO } from './dto/auth-login-dto';
 import { AuthRegisterDTO } from './dto/auth-register-dto';
 import { ApproveUserDTO } from './dto/auth-approveUser-dta';
-import { AuthForgetDTO } from './dto/auth-forget-dto ';
-import { Body } from '@nestjs/common';
 import { AuthResetDTO } from './dto/auth-reset-dto';
 import { UsersService } from 'src/Users/Users.Service';
 

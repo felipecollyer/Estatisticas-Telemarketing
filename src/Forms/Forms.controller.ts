@@ -1,24 +1,20 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Headers,
-  Param,
+  Controller,
   Delete,
-  Patch,
-  UseInterceptors,
-  Res,
-  Req,
+  Get,
+  Param,
   ParseIntPipe,
+  Patch,
+  Post,
+  Req,
   UnauthorizedException,
+  UseInterceptors,
 } from '@nestjs/common';
+import { Response, Request } from 'express';
 import { FormsService } from './Forms.service';
 import { CreateFormularioDto, UpdateFormularioDto } from './dto/index';
 import { LogInterceptor } from 'src/interceptors/log.interceptor';
-import { Response } from 'express';
-import { gerarEstatisticas } from './Handlers/GerarEstatisticas';
-
 @Controller('forms')
 export class FormsController {
   constructor(private readonly formsService: FormsService) {}

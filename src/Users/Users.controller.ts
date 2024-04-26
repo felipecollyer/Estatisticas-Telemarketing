@@ -10,16 +10,14 @@ import {
   Put,
   UseInterceptors,
 } from '@nestjs/common';
-
+import { LogInterceptor } from 'src/interceptors/log.interceptor';
 import {
   CriarUsuarioDTO,
-  UpdatePutUsuarioDTO,
-  UpdatePatchUsuarioDTO,
   LoginUserDTO,
+  UpdatePatchUsuarioDTO,
+  UpdatePutUsuarioDTO,
 } from './dto/index';
-
 import { UsersService } from './Users.Service';
-import { LogInterceptor } from 'src/interceptors/log.interceptor';
 
 @Controller('user')
 export class UsersController {
