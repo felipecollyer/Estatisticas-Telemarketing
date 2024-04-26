@@ -40,37 +40,25 @@ export class FormsController {
 
   @UseInterceptors(LogInterceptor)
   @Get()
-  async getForms(@Body() body, @Res() response: Response) {
-    const data = await this.formsService.getForms(body);
-
-    const { forms } = data;
-
-    const estatisticasFormularios = gerarEstatisticas(forms);
-
-    return response.render('index', {
-      estatisticasFormularios,
-      forms,
-    });
+  async getForms() {
+    return await this.formsService.getForms();
   }
 
   @Get(':id')
-  getForm(@Param('id', ParseIntPipe) id: number) {
-    return this.formsService.getForm(id);
+  async getForm(@Param('id', ParseIntPipe) id: number) {
+    return await this.formsService.getForm(id);
   }
 
   @Patch(':id')
-  updateForm(
+  async updateForm(
     @Param('id') id: string,
     @Body() updateFormularioDto: UpdateFormularioDto,
   ) {
-    return this.formsService.updateForm(+id, updateFormularioDto);
+    return await this.formsService.updateForm(+id, updateFormularioDto);
   }
 
   @Delete(':id')
-  deleteForm(
-    @Param('id', ParseIntPipe) id: number,
-    @Headers() headers: Record<string, string>,
-  ) {
-    return this.formsService.deleteForm(id, headers);
+  deleteForm(@Param('id', ParseIntPipe) id: number) {
+    return this.formsService.deleteForm(id);
   }
 }

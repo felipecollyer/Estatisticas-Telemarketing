@@ -32,55 +32,57 @@ export class FormsService {
     }
   }
 
-  async getForms(body) {
-    const { usuario_id, agendamento, data } = body;
-
-    const findData = new Date(data);
-    let foundForms = [];
-
-    if (agendamento === '24' || agendamento === '48') {
-      foundForms = await this.prisma.formulario.findMany({
-        where: {
-          usuario_id: usuario_id,
-          agendamento: agendamento,
-          created_at: {
-            gte: findData,
-          },
-        },
-      });
-    } else {
-      foundForms = await this.prisma.formulario.findMany({
-        where: {
-          usuario_id: usuario_id,
-          created_at: {
-            gte: findData,
-          },
-        },
-      });
-    }
-
-    const forms = separateForms(foundForms);
-
-    return { agendamento, forms };
+  async getForms() {
+    // const findData = new Date(data);
+    // let foundForms = [];
+    // if (agendamento === '24' || agendamento === '48') {
+    //   foundForms = await this.prisma.formulario.findMany({
+    //     where: {
+    //       usuario_id: usuario_id,
+    //       agendamento: agendamento,
+    //       created_at: {
+    //         gte: findData,
+    //       },
+    //     },
+    //   });
+    // } else {
+    //   foundForms = await this.prisma.formulario.findMany({
+    //     where: {
+    //       usuario_id: usuario_id,
+    //       created_at: {
+    //         gte: findData,
+    //       },
+    //     },
+    //   });
+    // }
+    // const forms = separateForms(foundForms);
+    // return { agendamento, forms };
+    return await this.prisma.formulario.findMany();
   }
 
   async getForm(id) {
+    console.log(id);
     const foundForm = await this.prisma.formulario.findUnique({
       where: { id: id },
     });
-    return { foundForm };
+    return foundForm;
   }
 
   async updateForm(id: number, updateFormularioDto: UpdateFormularioDto) {
-    return `This action updates a #${id} formulario`;
+    const newDataUpdade = await this.prisma.formulario.update({
+      data: updateFormularioDto,
+      where: {
+        id,
+      },
+    });
+
+    return newDataUpdade;
   }
 
-  async deleteForm(id, headers) {
-    const id_user = parseInt(headers.id_user);
-
+  async deleteForm(id) {
     try {
       const formDeleted = await this.prisma.formulario.delete({
-        where: { id: id, usuario_id: id_user },
+        where: { id: id },
       });
       return {
         formDeleted,
