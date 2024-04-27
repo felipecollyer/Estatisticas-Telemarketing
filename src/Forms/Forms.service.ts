@@ -60,35 +60,29 @@ export class FormsService {
     return await this.prisma.formulario.findMany();
   }
 
-  async getForm(id) {
-    console.log(id);
-    const foundForm = await this.prisma.formulario.findUnique({
-      where: { id: id },
+  async getForm(id: number) {
+    return await this.prisma.formulario.findUnique({
+      where: { id },
     });
-    return foundForm;
   }
 
   async updateForm(id: number, updateFormularioDto: UpdateFormularioDto) {
-    const newDataUpdade = await this.prisma.formulario.update({
+    return await this.prisma.formulario.update({
       data: updateFormularioDto,
       where: {
         id,
       },
     });
-
-    return newDataUpdade;
   }
 
-  async deleteForm(id) {
+  async deleteForm(id: number) {
     try {
       const formDeleted = await this.prisma.formulario.delete({
-        where: { id: id },
+        where: { id },
       });
-      return {
-        formDeleted,
-      };
-    } catch (formDeleted) {
-      return { error: formDeleted };
+      return { formDeleted };
+    } catch (error) {
+      return { error };
     }
   }
 }

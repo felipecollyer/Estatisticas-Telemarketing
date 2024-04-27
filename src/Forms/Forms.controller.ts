@@ -4,14 +4,13 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Patch,
   Post,
   Req,
   UnauthorizedException,
   UseInterceptors,
 } from '@nestjs/common';
-import { Response, Request } from 'express';
+import { Request } from 'express';
 import { FormsService } from './Forms.service';
 import { CreateFormularioDto, UpdateFormularioDto } from './dto/index';
 import { LogInterceptor } from 'src/interceptors/log.interceptor';
@@ -30,7 +29,7 @@ export class FormsController {
       const token = authHeader.split(' ')[1];
       return this.formsService.createForms(createFormularioDto, token);
     } else {
-      throw new UnauthorizedException('Token nao valido');
+      throw new UnauthorizedException('Token não válido');
     }
   }
 
@@ -41,8 +40,8 @@ export class FormsController {
   }
 
   @Get(':id')
-  async getForm(@Param('id', ParseIntPipe) id: number) {
-    return await this.formsService.getForm(id);
+  async getForm(@Param('id') id: string) {
+    return await this.formsService.getForm(+id);
   }
 
   @Patch(':id')
@@ -54,7 +53,7 @@ export class FormsController {
   }
 
   @Delete(':id')
-  deleteForm(@Param('id', ParseIntPipe) id: number) {
-    return this.formsService.deleteForm(id);
+  deleteForm(@Param('id') id: string) {
+    return this.formsService.deleteForm(+id);
   }
 }
