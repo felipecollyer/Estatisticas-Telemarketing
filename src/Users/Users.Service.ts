@@ -6,14 +6,14 @@ import {
   UpdatePatchUsuarioDTO,
   LoginUserDTO,
 } from './dto/index';
-import { ValidePassword } from './Handlers/ValidatePassword';
+import { ValidetePassword } from './Handlers/ValidatePassword';
 import { errorMessages } from './errorMessages';
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
   async createUser(data: CriarUsuarioDTO) {
-    const passwordsMatch = ValidePassword(data);
+    const passwordsMatch = ValidetePassword(data);
 
     try {
       if (!passwordsMatch) {
@@ -28,38 +28,24 @@ export class UsersService {
         throw new Error(errorMessages.EMAIL_ALREADY_REGISTERED);
       }
 
-      const existingAdmin = await this.prisma.usuario.count();
-
-      const access = existingAdmin ? 'pendente' : 'admin';
+      const access = (await this.prisma.usuario.count()) ? 'pendente' : 'admin';
 
       const newUser = await this.prisma.usuario.create({
         data: {
           name: data.name,
           email: data.email,
           password: data.password,
-          access: access,
+          access,
         },
       });
 
-      if (!newUser) {
-        throw new Error(errorMessages.FAILED_TO_CREATE_USER);
-      }
-
-      return {
-        id: newUser.id,
-        name: newUser.name,
-        email: newUser.email,
-        password: newUser.password,
-        access: newUser.access,
-        created_at: new Date(),
-        updated_at: new Date(),
-      };
+      return newUser;
     } catch (error) {
-      return { Erro: `${error.message}` };
+      throw new Error(error.message);
     }
   }
 
-  async Login(data: LoginUserDTO) {
+  async login(data: LoginUserDTO) {
     try {
       const user = await this.prisma.usuario.findFirst({
         where: { email: data.email },
@@ -68,127 +54,95 @@ export class UsersService {
       if (!user || user.password !== data.password) {
         throw new Error(errorMessages.FAILED_TO_LOGIN);
       }
+
+      return user;
     } catch (error) {
-      return { Erro: `${error.message}` };
+      throw new Error(error.message);
     }
-    return data;
   }
 
   async getUser(id: number) {
     try {
-      if (id <= 0) {
-        throw new Error(errorMessages.ID_INVALID);
-      }
-
       const user = await this.prisma.usuario.findUnique({
-        where: { id: id },
-        select: {
-          id: true,
-          name: true,
-          email: true,
-        },
+        where: { id },
+        select: { id: true, name: true, email: true },
       });
 
       if (!user) {
-        throw new Error(errorMessages.FAILED_TO_USER);
+        throw new NotFoundException(errorMessages.FAILED_TO_USER);
       }
 
       return user;
     } catch (error) {
-      return { Erro: `${error.message}` };
+      throw new Error(error.message);
     }
   }
 
   async getAllUsers() {
     try {
-      const foundUsers = await this.prisma.usuario.findMany({
-        select: {
-          name: true,
-          email: true,
-          id: true,
-        },
+      return await this.prisma.usuario.findMany({
+        select: { name: true, email: true, id: true },
       });
-
-      return foundUsers;
     } catch (error) {
-      console.error(errorMessages.FAILED_IN_SEARCH);
+      throw new Error(errorMessages.FAILED_IN_SEARCH);
     } finally {
       await this.prisma.$disconnect();
     }
   }
 
-  async UpdateAllData(id: number, data: UpdatePutUsuarioDTO) {
-    const newDataUpdade = await this.prisma.usuario.update({
-      data,
-      where: {
-        id,
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-      },
-    });
+  async updateAllData(id: number, data: UpdatePutUsuarioDTO) {
+    try {
+      const newDataUpdate = await this.prisma.usuario.update({
+        data,
+        where: { id },
+        select: { id: true, name: true, email: true },
+      });
 
-    return {
-      newDataUpdade,
-    };
+      return newDataUpdate;
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 
-  async UpdatePartialsData(id: number, data: UpdatePatchUsuarioDTO) {
+  async updatePartialsData(id: number, data: UpdatePatchUsuarioDTO) {
     try {
       const checkIdExist = await this.prisma.usuario.findFirst({
-        where: {
-          id,
-        },
+        where: { id },
       });
+
       if (!checkIdExist) {
-        throw new Error(errorMessages.FAILED_TO_USER);
+        throw new NotFoundException(errorMessages.FAILED_TO_USER);
       }
 
-      const NewDataUpdate = await this.prisma.usuario.update({
+      const newDataUpdate = await this.prisma.usuario.update({
         data,
-        where: {
-          id,
-        },
-        select: {
-          id: true,
-          name: true,
-          email: true,
-        },
+        where: { id },
+        select: { id: true, name: true, email: true },
       });
 
-      if (!NewDataUpdate) {
-        throw new Error(errorMessages.FAILED_TO_UPDATE_USER);
-      }
-
-      return NewDataUpdate;
+      return newDataUpdate;
     } catch (error) {
-      return `${error.message}`;
+      throw new Error(error.message);
     }
   }
 
-  async deleteUser(id) {
-    const usuario = await this.prisma.usuario.findFirst({
-      where: {
-        id: id,
-      },
-    });
+  async deleteUser(id: number) {
+    try {
+      const user = await this.prisma.usuario.findUnique({
+        where: { id },
+      });
 
-    if (!usuario) {
-      throw new NotFoundException(errorMessages.FAILED_TO_USER);
+      if (!user) {
+        throw new NotFoundException(errorMessages.FAILED_TO_USER);
+      }
+
+      await this.prisma.usuario.delete({
+        where: { id: user.id },
+      });
+
+      return { msg: `Usuario ${user.name} deletado.` };
+    } catch (error) {
+      throw new Error(error.message);
     }
-
-    const userDeleted = await this.prisma.usuario.delete({
-      where: {
-        id: usuario.id,
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-      },
-    });
-    return { msg: `Usuario ${userDeleted.name} deletado.` };
   }
 }

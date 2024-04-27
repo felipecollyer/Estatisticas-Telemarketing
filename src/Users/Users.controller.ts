@@ -19,24 +19,19 @@ import {
 } from './dto/index';
 import { UsersService } from './Users.Service';
 
-@Controller('user')
+@Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @UseInterceptors(LogInterceptor)
   @Post('register')
-  async createUser(@Body() data: CriarUsuarioDTO) {
-    return this.usersService.createUser(data);
+  async registerUser(@Body() criarUsuarioDto: CriarUsuarioDTO) {
+    return this.usersService.createUser(criarUsuarioDto);
   }
 
   @Post('login')
-  async Login(@Body() data: LoginUserDTO) {
-    return this.usersService.Login(data);
-  }
-
-  @Get(':id')
-  async getUser(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.getUser(id);
+  async loginUser(@Body() loginUserDto: LoginUserDTO) {
+    return this.usersService.login(loginUserDto);
   }
 
   @Get()
@@ -44,20 +39,25 @@ export class UsersController {
     return this.usersService.getAllUsers();
   }
 
+  @Get(':id')
+  async getUserById(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.getUser(id);
+  }
+
   @Put(':id')
-  async UpdateAll(
-    @Body() data: UpdatePutUsuarioDTO,
+  async updateUser(
+    @Body() updatePutUsuarioDto: UpdatePutUsuarioDTO,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    return this.usersService.UpdateAllData(id, data);
+    return this.usersService.updateAllData(id, updatePutUsuarioDto);
   }
 
   @Patch(':id')
-  async updatePartials(
-    @Body() data: UpdatePatchUsuarioDTO,
+  async updatePartialUser(
+    @Body() updatePatchUsuarioDto: UpdatePatchUsuarioDTO,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    return this.usersService.UpdatePartialsData(id, data);
+    return this.usersService.updatePartialsData(id, updatePatchUsuarioDto);
   }
 
   @Delete(':id')
