@@ -1,5 +1,5 @@
-import { ValidePassword } from './ValidatePassword';
+import { ValidetePassword } from './ValidatePassword';
 
 export class UserHandlers {
-  static ValidatePassword = ValidePassword;
+  static ValidatePassword = ValidetePassword;
 }

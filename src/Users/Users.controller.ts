@@ -53,7 +53,7 @@ export class UsersController {
   }
 
   @Patch(':id')
-  async updatePartialUser(
+   async updatePartialUser(
     @Body() updatePatchUsuarioDto: UpdatePatchUsuarioDTO,
     @Param('id', ParseIntPipe) id: number,
   ) {

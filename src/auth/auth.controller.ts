@@ -11,6 +11,7 @@ import { AuthService } from './auth.service';
 import { AuthLoginDTO } from './dto/auth-login-dto';
 import { AuthRegisterDTO } from './dto/auth-register-dto';
 import { ApproveUserDTO } from './dto/auth-approveUser-dta';
+import { AuthForgetDTO } from './dto/auth-forget-dto';
 import { AuthResetDTO } from './dto/auth-reset-dto';
 import { UsersService } from 'src/Users/Users.Service';
 
